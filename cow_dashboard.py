@@ -5,7 +5,7 @@ import pickle
 import time
 
 # Load model and data
-with open(r"C:\Users\Admin\Desktop\streamlit ui\stress_level_model.pkl", "rb") as model_file:
+model_path = os.path.join(current_directory, "stress_level_model.pkl")
     model = pickle.load(model_file)
 cow_data = pd.read_excel(r"C:\Users\Admin\Desktop\streamlit ui\cow data accurate.xlsx")
 
@@ -78,4 +78,4 @@ while True:
             )
 
     time.sleep(5)
-    st.rerun()
+    st.experimental_rerun()
