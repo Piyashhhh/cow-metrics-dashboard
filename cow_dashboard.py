@@ -2,19 +2,22 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import pickle
-import time
 import os
 
 # Get the current directory of the script
 current_directory = os.path.dirname(__file__)
 
 # Load model and data
-model_path = os.path.join(current_directory, "stress_level_model.pkl")
-with open(model_path, "rb") as model_file:
-    model = pickle.load(model_file)
+model_path = os.path.join(current_directory, "C:\Users\Admin\Desktop\streamlit ui\stress_level_model.pkl")
+
+if not os.path.exists(model_path):
+    st.error(f"Model file not found at {model_path}")
+else:
+    with open(model_path, "rb") as model_file:
+        model = pickle.load(model_file)
 
 # Update the cow data path to use relative file paths (assuming cow data is in the same directory)
-cow_data_path = os.path.join(current_directory, "cow data accurate.xlsx")
+cow_data_path = os.path.join(current_directory, "C:\Users\Admin\Desktop\streamlit ui\cow data accurate.xlsx")
 cow_data = pd.read_excel(cow_data_path)
 
 # Function to fluctuate data with realistic changes
@@ -55,7 +58,8 @@ st.set_page_config(page_title="Cow Metrics Dashboard", layout="wide")
 st.title("Cow Metrics Dashboard")
 
 # Update data for each cow and display in Streamlit
-while True:
+# Apply fluctuations to the data once every 5 seconds, without using while True
+for _ in range(5):  # Run this 5 times as an example (you can adjust this)
     cow_data = cow_data.apply(fluctuate_data, axis=1)  # Apply fluctuations
     cow_data['Predicted Stress Level'] = cow_data.apply(calculate_weighted_stress, axis=1)  # Calculate stress levels
 
@@ -86,4 +90,6 @@ while True:
             )
 
     time.sleep(5)
-    st.rerun()
+
+# Manually trigger rerun for Streamlit to update automatically
+st.experimental_rerun()
