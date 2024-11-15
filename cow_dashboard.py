@@ -3,11 +3,19 @@ import pandas as pd
 import numpy as np
 import pickle
 import time
+import os
+
+# Get the current directory of the script
+current_directory = os.path.dirname(__file__)
 
 # Load model and data
 model_path = os.path.join(current_directory, "stress_level_model.pkl")
+with open(model_path, "rb") as model_file:
     model = pickle.load(model_file)
-cow_data = pd.read_excel(r"C:\Users\Admin\Desktop\streamlit ui\cow data accurate.xlsx")
+
+# Update the cow data path to use relative file paths (assuming cow data is in the same directory)
+cow_data_path = os.path.join(current_directory, "cow data accurate.xlsx")
+cow_data = pd.read_excel(cow_data_path)
 
 # Function to fluctuate data with realistic changes
 def fluctuate_data(row):
@@ -78,4 +86,4 @@ while True:
             )
 
     time.sleep(5)
-    st.experimental_rerun()
+    st.rerun()
